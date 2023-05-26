@@ -22,7 +22,6 @@ void reset_buffer() {
 void setup()
  {
   Serial.begin (115200);   // set baud rate to 115200 for usart
-  Serial.println("Hello I'm SPI NANO_SLAVE");
   pinMode(SS, INPUT);
   pinMode(MOSI, INPUT);
   pinMode(MISO, OUTPUT);
@@ -31,7 +30,7 @@ void setup()
   SPI.attachInterrupt();
 
   reset_buffer();
-  SPDR = 0b00000010;
+  SPDR = 0b01000000;
 }
 
 void loop(){
@@ -55,11 +54,11 @@ void loop(){
   }
   time_since_last_msg++;
 
-  SPDR = 0b00000010;
+  SPDR = 0b01000000;
   // Handle calculation imitiation
   if(busy && !sending) {
     time_measuring++;
-    SPDR = 0b00000110;
+    SPDR = 0b01100000;
 
     if(time_measuring > 5) {
       busy = false;
@@ -87,7 +86,7 @@ void loop(){
       Serial.println(temp_bytes[1]);
       Serial.println(temp_bytes[2]);
 
-      SPDR = 0b00000010;
+      SPDR = 0b01000000;
     }
   }
   delay(1);
